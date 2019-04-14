@@ -55,3 +55,8 @@ class State:
 		#Garantees that the neighbor is a different state
 		if self.isDifferent(state):
 			self.next_states.append(state)
+	#Copia o estado atual em um novo estado
+	def copy_state(self, state):
+		state.pin1.items = self.pin1.items
+		state.pin2.items = self.pin2.items
+		state.pin3.items = self.pin3.items
