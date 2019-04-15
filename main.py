@@ -105,15 +105,22 @@ s.pin1.push(2)
 s.pin1.push(1)
 s.pin1.push(0)
 
-#Printa no terminal como esta o estado inicial
-print("Estado Inicial:")
-s.print_state()
+estado_atual = s
+entrada = 0
+while(entrada != "exit"):
+	#Printa no terminal como esta o estado inicial
+	print("----------------Estado Atual----------------")
+	estado_atual.print_state()
 
-#Gera automaticamente os próximos estados
-generate_next_states(s)
+	#Gera automaticamente os próximos estados
+	generate_next_states(estado_atual)
 
-#TODO: add method to print neighbor in the State class in models.py
-#Printa todos vizinhos do estado inicial
-for i in range(0, s.num_neighbor()):
-	print("Vizinho: %d" % i)
-	s.next_states[i].print_state()
+	#TODO: add method to print neighbor in the State class in models.py
+	#Printa todos vizinhos do estado inicial
+	for i in range(0, estado_atual.num_neighbor()):
+		print("------------------Vizinho %d------------------" % i)
+		estado_atual.next_states[i].print_state()
+
+	entrada = input("Vizinho a percorrer: ")
+	if entrada != "exit":
+		estado_atual = estado_atual.next_states[int(entrada)]
