@@ -66,22 +66,21 @@ class State:
 	#Retorna o número de estados vizinhos
 	def num_neighbor(self):
 		return len(self.next_states)
-	#Printa no terminal o estado dos pinos com as peças
-	"""
-	Formato do print para uma torre de hanoi com 3 peças no estado inicial:
-	0
-	1
-	2
-	Pino 1 ^ 
-
-	<empty>
-
-	Pino 2 ^ 
-
-	<empty>
-
-	Pino 3 ^ 
-	"""
+#	Printa no terminal o estado dos pinos com as peças
+#
+#	Formato do print para uma torre de hanoi com 3 peças no estado inicial:
+#	0
+#	1
+#	2
+#	Pino 1 ^ 
+#
+#	<empty>
+#
+#	Pino 2 ^ 
+#
+#	<empty>
+#
+#	Pino 3 ^ 
 	def print_state(self):
 		s = State()
 		self.copy_state(s)
