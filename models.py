@@ -17,7 +17,7 @@ class Pin:
 	#Methods:
 	#Retorna true se a pilha esta vazia, false caso contrario
 	def isEmpty(self):
-		return self.items == []
+		return (self.items == [])
 	#Adiciona na pilha
 	def push(self, item):
 		self.items.append(item)
@@ -57,9 +57,46 @@ class State:
 			self.next_states.append(state)
 	#Copia o estado atual em um novo estado
 	def copy_state(self, state):
-		state.pin1.items = self.pin1.items
-		state.pin2.items = self.pin2.items
-		state.pin3.items = self.pin3.items
+		for i in range(0, self.pin1.size()):
+			state.pin1.push(self.pin1.items[i])
+		for i in range(0, self.pin2.size()):
+			state.pin2.push(self.pin2.items[i])
+		for i in range(0, self.pin3.size()):
+			state.pin3.push(self.pin3.items[i])
 	#Retorna o número de estados vizinhos
 	def num_neighbor(self):
 		return len(self.next_states)
+	#Printa no terminal o estado dos pinos com as peças
+	"""
+	Formato do print para uma torre de hanoi com 3 peças no estado inicial:
+	0
+	1
+	2
+	Pino 1 ^ 
+
+	<empty>
+
+	Pino 2 ^ 
+
+	<empty>
+
+	Pino 3 ^ 
+	"""
+	def print_state(self):
+		s = State()
+		self.copy_state(s)
+		if s.pin1.isEmpty():
+			print("<empty>\n")
+		for i in range(0, s.pin1.size()):
+			print(s.pin1.pop(), end='\n')
+		print("Pino 1 ^ ", end='\n\n')
+		if s.pin2.isEmpty():
+			print("<empty>\n")
+		for i in range(0, s.pin2.size()):
+			print(s.pin2.pop(), end='\n')
+		print("Pino 2 ^ ", end='\n\n')
+		if s.pin3.isEmpty():
+			print("<empty>\n")
+		for i in range(0, s.pin3.size()):
+			print(s.pin3.pop(), end='\n')
+		print("Pino 3 ^ ", end='\n\n')
