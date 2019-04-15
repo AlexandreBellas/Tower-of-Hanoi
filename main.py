@@ -16,22 +16,26 @@ def generate_next_states(state):
 			s = State()
 			state.copy_state(s)
 			s.pin2.push(piece)
+			s.add_father(state)
 			state.add_state(s)
 		elif piece < state.pin2.peek():
 			s = State()
 			state.copy_state(s)
 			s.pin2.push(piece)
+			s.add_father(state)
 			state.add_state(s)
 
 		if state.pin3.isEmpty():
 			s = State()
 			state.copy_state(s)
 			s.pin3.push(piece)
+			s.add_father(state)
 			state.add_state(s)
 		elif piece < state.pin3.peek():
 			s = State()
 			state.copy_state(s)
 			s.pin3.push(piece)
+			s.add_father(state)
 			state.add_state(s)
 
 		state.pin1.push(piece)
@@ -43,22 +47,26 @@ def generate_next_states(state):
 			s = State()
 			state.copy_state(s)
 			s.pin1.push(piece)
+			s.add_father(state)
 			state.add_state(s)
 		elif piece < state.pin1.peek():
 			s = State()
 			state.copy_state(s)
 			s.pin1.push(piece)
+			s.add_father(state)
 			state.add_state(s)
 
 		if state.pin3.isEmpty():
 			s = State()
 			state.copy_state(s)
 			s.pin3.push(piece)
+			s.add_father(state)
 			state.add_state(s)
 		elif piece < state.pin3.peek():
 			s = State()
 			state.copy_state(s)
 			s.pin3.push(piece)
+			s.add_father(state)
 			state.add_state(s)
 
 		state.pin2.push(piece)
@@ -70,22 +78,26 @@ def generate_next_states(state):
 			s = State()
 			state.copy_state(s)
 			s.pin1.push(piece)
+			s.add_father(state)
 			state.add_state(s)
 		elif piece < state.pin1.peek():
 			s = State()
 			state.copy_state(s)
 			s.pin1.push(piece)
+			s.add_father(state)
 			state.add_state(s)
 
 		if state.pin2.isEmpty():
 			s = State()
 			state.copy_state(s)
 			s.pin2.push(piece)
+			s.add_father(state)
 			state.add_state(s)
 		elif piece < state.pin2.peek():
 			s = State()
 			state.copy_state(s)
 			s.pin2.push(piece)
+			s.add_father(state)
 			state.add_state(s)
 
 		state.pin3.push(piece)

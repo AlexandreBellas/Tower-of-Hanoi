@@ -38,6 +38,7 @@ class State:
 		self.pin2 = Pin()
 		self.pin3 = Pin()
 		self.next_states = []
+		self.father = []
 
 	#Methods:
 	#Retorna true se o estado "state" for diferente do estado atual, false caso contrario
@@ -66,8 +67,10 @@ class State:
 	#Retorna o número de estados vizinhos
 	def num_neighbor(self):
 		return len(self.next_states)
+	#Adiciona um pai
+	def add_father(self, state):
+		self.father.append(state)
 #	Printa no terminal o estado dos pinos com as peças
-#
 #	Formato do print para uma torre de hanoi com 3 peças no estado inicial:
 #	0
 #	1
