@@ -17,26 +17,42 @@ def generate_next_states(state):
 			state.copy_state(s)
 			s.pin2.push(piece)
 			s.add_father(state)
-			state.add_state(s)
+			#Condition to check if grandpa is different fron grandson
+			if (state.father[0].isDifferent(s)):
+				state.add_state(s)
+			else:
+				del s
 		elif piece < state.pin2.peek():
 			s = State()
 			state.copy_state(s)
 			s.pin2.push(piece)
 			s.add_father(state)
-			state.add_state(s)
+			#Condition to check if grandpa is different fron grandson
+			if (state.father[0].isDifferent(s)):
+				state.add_state(s)
+			else:
+				del s
 
 		if state.pin3.isEmpty():
 			s = State()
 			state.copy_state(s)
 			s.pin3.push(piece)
 			s.add_father(state)
-			state.add_state(s)
+			#Condition to check if grandpa is different fron grandson
+			if (state.father[0].isDifferent(s)):
+				state.add_state(s)
+			else:
+				del s
 		elif piece < state.pin3.peek():
 			s = State()
 			state.copy_state(s)
 			s.pin3.push(piece)
 			s.add_father(state)
-			state.add_state(s)
+			#Condition to check if grandpa is different fron grandson
+			if (state.father[0].isDifferent(s)):
+				state.add_state(s)
+			else:
+				del s
 
 		state.pin1.push(piece)
 
@@ -48,26 +64,42 @@ def generate_next_states(state):
 			state.copy_state(s)
 			s.pin1.push(piece)
 			s.add_father(state)
-			state.add_state(s)
+			#Condition to check if grandpa is different fron grandson
+			if (state.father[0].isDifferent(s)):
+				state.add_state(s)
+			else:
+				del s
 		elif piece < state.pin1.peek():
 			s = State()
 			state.copy_state(s)
 			s.pin1.push(piece)
 			s.add_father(state)
-			state.add_state(s)
+			#Condition to check if grandpa is different fron grandson
+			if (state.father[0].isDifferent(s)):
+				state.add_state(s)
+			else:
+				del s
 
 		if state.pin3.isEmpty():
 			s = State()
 			state.copy_state(s)
 			s.pin3.push(piece)
 			s.add_father(state)
-			state.add_state(s)
+			#Condition to check if grandpa is different fron grandson
+			if (state.father[0].isDifferent(s)):
+				state.add_state(s)
+			else:
+				del s
 		elif piece < state.pin3.peek():
 			s = State()
 			state.copy_state(s)
 			s.pin3.push(piece)
 			s.add_father(state)
-			state.add_state(s)
+			#Condition to check if grandpa is different fron grandson
+			if (state.father[0].isDifferent(s)):
+				state.add_state(s)
+			else:
+				del s
 
 		state.pin2.push(piece)
 
@@ -79,26 +111,42 @@ def generate_next_states(state):
 			state.copy_state(s)
 			s.pin1.push(piece)
 			s.add_father(state)
-			state.add_state(s)
+			#Condition to check if grandpa is different fron grandson
+			if (state.father[0].isDifferent(s)):
+				state.add_state(s)
+			else:
+				del s
 		elif piece < state.pin1.peek():
 			s = State()
 			state.copy_state(s)
 			s.pin1.push(piece)
 			s.add_father(state)
-			state.add_state(s)
+			#Condition to check if grandpa is different fron grandson
+			if (state.father[0].isDifferent(s)):
+				state.add_state(s)
+			else:
+				del s
 
 		if state.pin2.isEmpty():
 			s = State()
 			state.copy_state(s)
 			s.pin2.push(piece)
 			s.add_father(state)
-			state.add_state(s)
+			#Condition to check if grandpa is different fron grandson
+			if (state.father[0].isDifferent(s)):
+				state.add_state(s)
+			else:
+				del s
 		elif piece < state.pin2.peek():
 			s = State()
 			state.copy_state(s)
 			s.pin2.push(piece)
 			s.add_father(state)
-			state.add_state(s)
+			#Condition to check if grandpa is different fron grandson
+			if (state.father[0].isDifferent(s)):
+				state.add_state(s)
+			else:
+				del s
 
 		state.pin3.push(piece)
 
@@ -113,9 +161,11 @@ pin1  pin2  pin3
 #creating the first state for a Tower of Hanoi with 3 pieces:
 #TODO: automatically create the initial state for N pieces
 s = State()
+place_holder_father = State()
 s.pin1.push(2)
 s.pin1.push(1)
 s.pin1.push(0)
+s.add_father(place_holder_father)
 
 estado_atual = s
 entrada = 0
