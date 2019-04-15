@@ -7,6 +7,7 @@ from models import Pin, State
 
 
 #TODO: add method to generate next states to State class in models.py
+#TODO: add condition to check if the next state isn't equal to an uncle state
 def generate_next_states(state):
 
 	if (state.pin1.isEmpty() == False):
@@ -169,6 +170,9 @@ s.add_father(place_holder_father)
 
 estado_atual = s
 entrada = 0
+#TODO: run the depth search iteratively
+#TODO: add an algorithm to store in a file all states that we already went through (dynamic programming)
+#TODO: using that file, add an algorithm to run the depth search recursively
 while(entrada != "exit"):
 	#Printa no terminal como esta o estado inicial
 	print("----------------Estado Atual----------------")
