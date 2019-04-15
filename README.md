@@ -9,8 +9,12 @@ The team is made up by:
 - Thiago Músico
 - Tiago Lemes Daneluzzi
 
-# How to Run
-Windows:
-  ...\> py main.py
-Linux/Mac:
-  $ py main.py
+## How to Run
+### Windows
+```
+...\> py main.py
+```
+### Linux/Mac
+```
+$ py main.py
+```
