@@ -8,3 +8,9 @@ The team is made up by:
 - Murilo Luz Stucki
 - Thiago Músico
 - Tiago Lemes Daneluzzi
+
+# How to Run
+Windows:
+  ...\> py main.py
+Linux/Mac:
+  $ py main.py
