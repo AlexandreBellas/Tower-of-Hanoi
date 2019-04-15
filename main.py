@@ -178,7 +178,7 @@ while(entrada != "exit"):
 	print("----------------Estado Atual----------------")
 	estado_atual.print_state()
 
-	#Gera automaticamente os próximos estados
+	#Gera automaticamente os proximos estados
 	generate_next_states(estado_atual)
 
 	#TODO: add method to print neighbor in the State class in models.py
