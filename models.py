@@ -64,7 +64,7 @@ class State:
 			state.pin2.push(self.pin2.items[i])
 		for i in range(0, self.pin3.size()):
 			state.pin3.push(self.pin3.items[i])
-	#Retorna o número de estados vizinhos
+	#Retorna o numero de estados vizinhos
 	def num_neighbor(self):
 		return len(self.next_states)
 	#Adiciona um pai
