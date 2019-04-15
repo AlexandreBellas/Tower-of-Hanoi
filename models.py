@@ -60,3 +60,6 @@ class State:
 		state.pin1.items = self.pin1.items
 		state.pin2.items = self.pin2.items
 		state.pin3.items = self.pin3.items
+	#Retorna o número de estados vizinhos
+	def num_neighbor(self):
+		return len(self.next_states)
