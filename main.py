@@ -184,9 +184,9 @@ while(entrada != "exit"):
 	#TODO: add method to print neighbor in the State class in models.py
 	#Printa todos vizinhos do estado inicial
 	for i in range(0, estado_atual.num_neighbor()):
-		print("------------------Vizinho %d------------------" % i)
+		print("-------------------Filho %d-------------------" % i)
 		estado_atual.next_states[i].print_state()
 
-	entrada = input("Vizinho a percorrer: ")
+	entrada = input("Filho a percorrer: ")
 	if entrada != "exit":
 		estado_atual = estado_atual.next_states[int(entrada)]
