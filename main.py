@@ -3,6 +3,7 @@
 This is the main archive of the Tower of Hanoi problem
 **************************************************************************************
 """
+#Lariça is watching
 from models import Pin, State
 
 
@@ -156,7 +157,7 @@ First State for 3 pieces:
 
  0
  1
- 2		
+ 2
 pin1  pin2  pin3
 """
 #creating the first state for a Tower of Hanoi with 3 pieces:
