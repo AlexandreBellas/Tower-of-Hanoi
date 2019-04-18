@@ -23,7 +23,11 @@ def generate_next_states(state):
 			s.add_father(state)
 			#Condition to check if grandpa is different fron grandson
 			if (state.father[0].isDifferent(s)):
-				state.add_state(s)
+				#Condition to check if uncle is different from nephew
+				if (state.diff_uncle(s)):
+					state.add_state(s)
+				else:
+					del s
 			else:
 				del s
 		elif piece < state.pin2.peek():
@@ -33,7 +37,11 @@ def generate_next_states(state):
 			s.add_father(state)
 			#Condition to check if grandpa is different fron grandson
 			if (state.father[0].isDifferent(s)):
-				state.add_state(s)
+				#Condition to check if uncle is different from nephew
+				if (state.diff_uncle(s)):
+					state.add_state(s)
+				else:
+					del s
 			else:
 				del s
 
@@ -44,7 +52,11 @@ def generate_next_states(state):
 			s.add_father(state)
 			#Condition to check if grandpa is different fron grandson
 			if (state.father[0].isDifferent(s)):
-				state.add_state(s)
+				#Condition to check if uncle is different from nephew
+				if (state.diff_uncle(s)):
+					state.add_state(s)
+				else:
+					del s
 			else:
 				del s
 		elif piece < state.pin3.peek():
@@ -54,7 +66,11 @@ def generate_next_states(state):
 			s.add_father(state)
 			#Condition to check if grandpa is different fron grandson
 			if (state.father[0].isDifferent(s)):
-				state.add_state(s)
+				#Condition to check if uncle is different from nephew
+				if (state.diff_uncle(s)):
+					state.add_state(s)
+				else:
+					del s
 			else:
 				del s
 
@@ -70,7 +86,11 @@ def generate_next_states(state):
 			s.add_father(state)
 			#Condition to check if grandpa is different fron grandson
 			if (state.father[0].isDifferent(s)):
-				state.add_state(s)
+				#Condition to check if uncle is different from nephew
+				if (state.diff_uncle(s)):
+					state.add_state(s)
+				else:
+					del s
 			else:
 				del s
 		elif piece < state.pin1.peek():
@@ -80,7 +100,11 @@ def generate_next_states(state):
 			s.add_father(state)
 			#Condition to check if grandpa is different fron grandson
 			if (state.father[0].isDifferent(s)):
-				state.add_state(s)
+				#Condition to check if uncle is different from nephew
+				if (state.diff_uncle(s)):
+					state.add_state(s)
+				else:
+					del s
 			else:
 				del s
 
@@ -91,7 +115,11 @@ def generate_next_states(state):
 			s.add_father(state)
 			#Condition to check if grandpa is different fron grandson
 			if (state.father[0].isDifferent(s)):
-				state.add_state(s)
+				#Condition to check if uncle is different from nephew
+				if (state.diff_uncle(s)):
+					state.add_state(s)
+				else:
+					del s
 			else:
 				del s
 		elif piece < state.pin3.peek():
@@ -101,7 +129,11 @@ def generate_next_states(state):
 			s.add_father(state)
 			#Condition to check if grandpa is different fron grandson
 			if (state.father[0].isDifferent(s)):
-				state.add_state(s)
+				#Condition to check if uncle is different from nephew
+				if (state.diff_uncle(s)):
+					state.add_state(s)
+				else:
+					del s
 			else:
 				del s
 
@@ -117,7 +149,11 @@ def generate_next_states(state):
 			s.add_father(state)
 			#Condition to check if grandpa is different fron grandson
 			if (state.father[0].isDifferent(s)):
-				state.add_state(s)
+				#Condition to check if uncle is different from nephew
+				if (state.diff_uncle(s)):
+					state.add_state(s)
+				else:
+					del s
 			else:
 				del s
 		elif piece < state.pin1.peek():
@@ -127,7 +163,11 @@ def generate_next_states(state):
 			s.add_father(state)
 			#Condition to check if grandpa is different fron grandson
 			if (state.father[0].isDifferent(s)):
-				state.add_state(s)
+				#Condition to check if uncle is different from nephew
+				if (state.diff_uncle(s)):
+					state.add_state(s)
+				else:
+					del s
 			else:
 				del s
 
@@ -138,7 +178,11 @@ def generate_next_states(state):
 			s.add_father(state)
 			#Condition to check if grandpa is different fron grandson
 			if (state.father[0].isDifferent(s)):
-				state.add_state(s)
+				#Condition to check if uncle is different from nephew
+				if (state.diff_uncle(s)):
+					state.add_state(s)
+				else:
+					del s
 			else:
 				del s
 		elif piece < state.pin2.peek():
@@ -148,7 +192,11 @@ def generate_next_states(state):
 			s.add_father(state)
 			#Condition to check if grandpa is different fron grandson
 			if (state.father[0].isDifferent(s)):
-				state.add_state(s)
+				#Condition to check if uncle is different from nephew
+				if (state.diff_uncle(s)):
+					state.add_state(s)
+				else:
+					del s
 			else:
 				del s
 
@@ -166,6 +214,7 @@ pin1  pin2  pin3
 #TODO: automatically create the initial state for N pieces
 s = State()
 place_holder_father = State()
+place_holder_father.add_state(s)
 s.pin1.push(2)
 s.pin1.push(1)
 s.pin1.push(0)

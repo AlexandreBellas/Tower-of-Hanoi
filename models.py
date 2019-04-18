@@ -70,6 +70,13 @@ class State:
 	#Adiciona um pai
 	def add_father(self, state):
 		self.father.append(state)
+	#Verifica se os irmaos do estado atual sao diferente do estado
+	def diff_uncle(self, state):
+		pai = self.father[0]
+		for i in range (0, pai.num_neighbor()):
+			if (pai.next_states[i].isDifferent(state) == False):
+				return False
+		return True
 #	Printa no terminal o estado dos pinos com as peças
 #	Formato do print para uma torre de hanoi com 3 peças no estado inicial:
 #	0
