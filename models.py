@@ -22,8 +22,12 @@ class Pin:
 
 	#Adiciona na pilha
 	def push(self, item):
-		self.items.append(item)
-		#TODO: Encapsular a verificacao do tamanho
+		if self.isEmpty() or item < self.peek():
+			self.items.append(item)
+			return True
+
+		else:
+			return False
 
 	#Remove da pilha e retorna o valor
 	def pop(self):
@@ -106,16 +110,26 @@ class State:
 
 	#Gera os próximos estados (filhos)
 	def generateNextStates(self):
+		#Para cada pino do estado atual
 		for i in range(len(self.pins)):
+
+			#Se o pino não estiver vazio, podemos tirar uma peça dele
 			if not self.pins[i].isEmpty():
+				#Retiramos uma peça do pino em questão
 				piece = self.pins[i].pop()
+				#Para cada um dos outros pinos,
 				for j in range(len(self.pins)):
+					#desde que não seja o pino em questão,
 					if j != i:
-						if self.pins[j].isEmpty() or piece < self.pins[j].peek():
-							s = State()
-							self.copyState(s)
-							s.pins[j].push(piece)
-							s.addFather(self)
+
+						#Criamos um estado novo que será a cópia do estado atual
+						s = State()
+						self.copyState(s)
+						#e o estado atual será pai desse novo estado
+						s.addFather(self)
+
+						#Tentamos inserir a peça retirada do estado atual nesse novo estado
+						if s.pins[j].push(piece):
 							#Condition to check if grandpa is different fron grandson
 							if (self.father.isItemDifferent(s)):
 								#Condition to check if uncle is different from nephew
@@ -125,7 +139,7 @@ class State:
 									del s
 							else:
 								del s
-							
+
 				#Voltando a peca original no seu lugar devido
 				self.pins[i].push(piece)
 
