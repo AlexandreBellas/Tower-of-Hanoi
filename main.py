@@ -7,6 +7,8 @@ This is the main archive of the Tower of Hanoi problem
 #lariça is testing
 
 from models import Pin, State
+import time
+import os
 
 
 #TODO: add method to generate next states to State class in models.py
@@ -202,6 +204,53 @@ def generate_next_states(state):
 
 		state.pin3.push(piece)
 
+passos = 0
+
+def dfs(estado, states_gone=[]):
+	if estado.pin1.isEmpty() and (estado.pin2.isEmpty()):# or estado.pin2.isEmpty()):
+		print("Estado final alcançado")
+		quit()
+
+	#Printa no terminal como esta o estado atual
+	print("----------------Estado Atual----------------")
+	estado.print_state()
+
+	#Gera automaticamente os proximos estados
+	generate_next_states(estado)
+
+	#TODO: add method to print neighbor in the State class in models.py
+	#Printa todos os filhos do estado inicial
+	for i in range(0, estado.num_neighbor()):
+		print("-------------------Filho %d-------------------" % i)
+		estado.next_states[i].print_state()
+
+	#input("Aperta ai krai")
+	#os.system("clear")
+
+	#time.sleep(5)
+	flag = 0
+
+	for est in estado.next_states:
+		
+		for gone in states_gone:
+			if not est.isDifferent(gone):
+				flag = 1
+				break
+			
+		if flag == 1:
+			break
+
+		states_gone.append(est)
+		global passos
+		passos += 1
+		print("passos = %d" % passos)
+		dfs(est, states_gone)
+
+		passos += 1
+		print("passos = %d" % passos)
+		estado.print_state_reduced()
+
+
 """
 First State for 3 pieces:
 
@@ -222,23 +271,27 @@ s.add_father(place_holder_father)
 
 estado_atual = s
 entrada = 0
-#TODO: run the depth search iteratively
-#TODO: add an algorithm to store in a file all states that we already went through (dynamic programming)
-#TODO: using that file, add an algorithm to run the depth search recursively
-while(entrada != "exit"):
-	#Printa no terminal como esta o estado inicial
-	print("----------------Estado Atual----------------")
-	estado_atual.print_state()
 
-	#Gera automaticamente os proximos estados
-	generate_next_states(estado_atual)
+dfs(s)
 
-	#TODO: add method to print neighbor in the State class in models.py
-	#Printa todos vizinhos do estado inicial
-	for i in range(0, estado_atual.num_neighbor()):
-		print("-------------------Filho %d-------------------" % i)
-		estado_atual.next_states[i].print_state()
 
-	entrada = input("Filho a percorrer: ")
-	if entrada != "exit":
-		estado_atual = estado_atual.next_states[int(entrada)]
+# #TODO: run the depth search iteratively
+# #TODO: add an algorithm to store in a file all states that we already went through (dynamic programming)
+# #TODO: using that file, add an algorithm to run the depth search recursively
+# while(entrada != "exit"):
+# 	#Printa no terminal como esta o estado inicial
+# 	print("----------------Estado Atual----------------")
+# 	estado_atual.print_state()
+
+# 	#Gera automaticamente os proximos estados
+# 	generate_next_states(estado_atual)
+
+# 	#TODO: add method to print neighbor in the State class in models.py
+# 	#Printa todos vizinhos do estado inicial
+# 	for i in range(0, estado_atual.num_neighbor()):
+# 		print("-------------------Filho %d-------------------" % i)
+# 		estado_atual.next_states[i].print_state()
+
+# 	entrada = input("Filho a percorrer: ")
+# 	if entrada != "exit":
+# 		estado_atual = estado_atual.next_states[int(entrada)]

@@ -40,6 +40,12 @@ class State:
 		self.next_states = []
 		self.father = []
 
+	def __eq__(self, other):
+		if not isinstance(other, State):
+			return NotImplemented
+
+		return self.isDifferent(other)
+
 	#Methods:
 	#Retorna true se o estado "state" for diferente do estado atual, false caso contrario
 	def isDifferent(self, state):
@@ -109,3 +115,24 @@ class State:
 		for i in range(0, s.pin3.size()):
 			print(s.pin3.pop(), end='\n')
 		print("Pino 3 ^ ", end='\n\n')
+
+	def print_state_reduced(self):
+		s = State()
+		self.copy_state(s)
+		if s.pin1.isEmpty():
+			print("<empty>", end=' ')
+		for i in range(0, s.pin1.size()):
+			print(s.pin1.pop(), end=' ')
+		print("|", end=' ')
+
+		if s.pin2.isEmpty():
+			print("<empty> |", end=' ')
+		for i in range(0, s.pin2.size()):
+			print(s.pin2.pop(), end=' ')
+		print("|", end=' ')
+
+		if s.pin3.isEmpty():
+			print("<empty>", end=' ')
+		for i in range(0, s.pin3.size()):
+			print(s.pin3.pop(), end=' ')
+		print("\n")
