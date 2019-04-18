@@ -21,6 +21,7 @@ class Pin:
 	#Adiciona na pilha
 	def push(self, item):
 		self.items.append(item)
+		#TODO: Encapsular a verificacao do tamanho
 	#Remove da pilha e retorna o valor
 	def pop(self):
 		return self.items.pop()
@@ -34,53 +35,39 @@ class Pin:
 class State:
 	#Constructor:
 	def __init__(self):
-		self.pin1 = Pin()
-		self.pin2 = Pin()
-		self.pin3 = Pin()
+		self.pins = [Pin() for j in range(3)]
 		self.next_states = []
-		self.father = []
-
-	def __eq__(self, other):
-		if not isinstance(other, State):
-			return NotImplemented
-
-		return self.isDifferent(other)
+		self.father = 0
 
 	#Methods:
 	#Retorna true se o estado "state" for diferente do estado atual, false caso contrario
-	def isDifferent(self, state):
-		if self.pin1.items != state.pin1.items:
-			return True
-		elif self.pin2.items != state.pin2.items:
-			return True
-		elif self.pin3.items != state.pin3.items:
-			return True
-		else:
-			return False
+	def isItemDifferent(self, state):
+		for pin_self, pin_state in zip(self.pins, state.pins):
+			if pin_self.items != pin_state.items:
+				return True
+		return False
+
 	#Adiciona um estado na lista de estados vizinhos
-	def add_state(self, state):
+	def addState(self, state):
 		#Garantees that the neighbor is a different state
-		if self.isDifferent(state):
+		if self.isItemDifferent(state):
 			self.next_states.append(state)
 	#Copia o estado atual em um novo estado
-	def copy_state(self, state):
-		for i in range(0, self.pin1.size()):
-			state.pin1.push(self.pin1.items[i])
-		for i in range(0, self.pin2.size()):
-			state.pin2.push(self.pin2.items[i])
-		for i in range(0, self.pin3.size()):
-			state.pin3.push(self.pin3.items[i])
+	def copyState(self, state):
+		for j in range(len(self.pins)):
+			for i in range(self.pins[j].size()):
+				state.pins[j].push(self.pins[j].items[i])
+
 	#Retorna o numero de estados vizinhos
-	def num_neighbor(self):
+	def numNeighbor(self):
 		return len(self.next_states)
 	#Adiciona um pai
-	def add_father(self, state):
-		self.father.append(state)
+	def addFather(self, state):
+		self.father = state
 	#Verifica se os irmaos do estado atual sao diferente do estado
-	def diff_uncle(self, state):
-		pai = self.father[0]
-		for i in range (0, pai.num_neighbor()):
-			if (pai.next_states[i].isDifferent(state) == False):
+	def diffUncle(self, state):
+		for i in range (self.father.numNeighbor()):
+			if not self.father.next_states[i].isItemDifferent(state):
 				return False
 		return True
 #	Printa no terminal o estado dos pinos com as peças
@@ -97,42 +84,50 @@ class State:
 #	<empty>
 #
 #	Pino 3 ^ 
-	def print_state(self):
+	def printState(self):
 		s = State()
-		self.copy_state(s)
-		if s.pin1.isEmpty():
-			print("<empty>\n")
-		for i in range(0, s.pin1.size()):
-			print(s.pin1.pop(), end='\n')
-		print("Pino 1 ^ ", end='\n\n')
-		if s.pin2.isEmpty():
-			print("<empty>\n")
-		for i in range(0, s.pin2.size()):
-			print(s.pin2.pop(), end='\n')
-		print("Pino 2 ^ ", end='\n\n')
-		if s.pin3.isEmpty():
-			print("<empty>\n")
-		for i in range(0, s.pin3.size()):
-			print(s.pin3.pop(), end='\n')
-		print("Pino 3 ^ ", end='\n\n')
+		self.copyState(s)
+		for j in range(len(self.pins)):
+			if s.pins[j].isEmpty():
+				print("<empty>\n")
+			for i in range(0, s.pins[j].size()):
+				print(s.pins[j].pop(), end='\n')
+			print("Pino %d ^ " % j, end='\n\n')
 
-	def print_state_reduced(self):
-		s = State()
-		self.copy_state(s)
-		if s.pin1.isEmpty():
-			print("<empty>", end=' ')
-		for i in range(0, s.pin1.size()):
-			print(s.pin1.pop(), end=' ')
-		print("|", end=' ')
-
-		if s.pin2.isEmpty():
-			print("<empty> |", end=' ')
-		for i in range(0, s.pin2.size()):
-			print(s.pin2.pop(), end=' ')
-		print("|", end=' ')
-
-		if s.pin3.isEmpty():
-			print("<empty>", end=' ')
-		for i in range(0, s.pin3.size()):
-			print(s.pin3.pop(), end=' ')
-		print("\n")
+	
+	def generateNextStates(self):
+		for i in range(len(self.pins)):
+			if not self.pins[i].isEmpty():
+				piece = self.pins[i].pop()
+				for j in range(len(self.pins)):
+					if j != i:
+						if self.pins[j].isEmpty():
+							s = State()
+							self.copyState(s)
+							s.pins[j].push(piece)
+							s.addFather(self)
+							#Condition to check if grandpa is different fron grandson
+							if (self.father.isItemDifferent(s)):
+								#Condition to check if uncle is different from nephew
+								if (self.diffUncle(s)):
+									self.addState(s)
+								else:
+									del s
+							else:
+								del s
+						elif piece < self.pins[j].peek():
+							s = State()
+							self.copyState(s)
+							s.pins[j].push(piece)
+							s.addFather(self)
+							#Condition to check if grandpa is different fron grandson
+							if (self.father.isItemDifferent(s)):
+								#Condition to check if uncle is different from nephew
+								if (self.diffUncle(s)):
+									self.addState(s)
+								else:
+									del s
+							else:
+								del s
+				#Voltando a peca original no seu lugar devido
+				self.pins[i].push(piece)
