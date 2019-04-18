@@ -10,6 +10,7 @@ Ex: In a tower of hanoi problem of 3 pieces
 **************************************************************************************
 """
 class Pin:
+
 	#Constructor:
 	def __init__(self):
 		self.items = []
@@ -18,21 +19,26 @@ class Pin:
 	#Retorna true se a pilha esta vazia, false caso contrario
 	def isEmpty(self):
 		return (self.items == [])
+
 	#Adiciona na pilha
 	def push(self, item):
 		self.items.append(item)
 		#TODO: Encapsular a verificacao do tamanho
+
 	#Remove da pilha e retorna o valor
 	def pop(self):
 		return self.items.pop()
+
 	#Retorna o valor sem remover da pilha
 	def peek(self):
 		return self.items[len(self.items)-1]
+
 	#Retorna o tamanho da pilha
 	def size(self):
 		return len(self.items)
 
 class State:
+
 	#Constructor:
 	def __init__(self):
 		self.pins = [Pin() for j in range(3)]
@@ -52,6 +58,7 @@ class State:
 		#Garantees that the neighbor is a different state
 		if self.isItemDifferent(state):
 			self.next_states.append(state)
+
 	#Copia o estado atual em um novo estado
 	def copyState(self, state):
 		for j in range(len(self.pins)):
@@ -61,15 +68,18 @@ class State:
 	#Retorna o numero de estados vizinhos
 	def numNeighbor(self):
 		return len(self.next_states)
+
 	#Adiciona um pai
 	def addFather(self, state):
 		self.father = state
+
 	#Verifica se os irmaos do estado atual sao diferente do estado
 	def diffUncle(self, state):
 		for i in range (self.father.numNeighbor()):
 			if not self.father.next_states[i].isItemDifferent(state):
 				return False
 		return True
+
 #	Printa no terminal o estado dos pinos com as peças
 #	Formato do print para uma torre de hanoi com 3 peças no estado inicial:
 #	0
@@ -94,14 +104,14 @@ class State:
 				print(s.pins[j].pop(), end='\n')
 			print("Pino %d ^ " % j, end='\n\n')
 
-	
+	#Gera os próximos estados (filhos)
 	def generateNextStates(self):
 		for i in range(len(self.pins)):
 			if not self.pins[i].isEmpty():
 				piece = self.pins[i].pop()
 				for j in range(len(self.pins)):
 					if j != i:
-						if self.pins[j].isEmpty():
+						if self.pins[j].isEmpty() or piece < self.pins[j].peek():
 							s = State()
 							self.copyState(s)
 							s.pins[j].push(piece)
@@ -115,19 +125,12 @@ class State:
 									del s
 							else:
 								del s
-						elif piece < self.pins[j].peek():
-							s = State()
-							self.copyState(s)
-							s.pins[j].push(piece)
-							s.addFather(self)
-							#Condition to check if grandpa is different fron grandson
-							if (self.father.isItemDifferent(s)):
-								#Condition to check if uncle is different from nephew
-								if (self.diffUncle(s)):
-									self.addState(s)
-								else:
-									del s
-							else:
-								del s
+							
 				#Voltando a peca original no seu lugar devido
 				self.pins[i].push(piece)
+
+	#Printa todos os filhos do estado
+	def printNeighbors(self):
+		for i in range(0, self.numNeighbor()):
+			print("-------------------Filho %d-------------------" % i)
+			self.next_states[i].printState()
