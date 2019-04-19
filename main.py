@@ -15,7 +15,9 @@ passos = 0
 #Função de busca em profundidade (dfs)
 def dfs(estado, states_gone=[]):
 	if estado.pins[0].isEmpty() and (estado.pins[1].isEmpty()):
-		print("Estado final alcançado")
+		print("----------------Estado Atual----------------")
+		estado.printState()
+		print("Estado final alcançado!")
 		quit()
 
 	#Printa no terminal como esta o estado atual
@@ -26,7 +28,7 @@ def dfs(estado, states_gone=[]):
 	estado.generateNextStates()
 
 	#Printa todos os filhos do estado atual
-	estado.printNeighbors()
+	#estado.printNeighbors()
 
 	flag = 0
 
@@ -50,14 +52,19 @@ def dfs(estado, states_gone=[]):
 		#Acrescenta-se o número de passos
 		global passos
 		passos += 1
-		print("passos = %d" % passos)
+		print("passos: %d " % passos)
 
 		#Recursivamente, busca em profundidade no filho
 		dfs(est, states_gone)
 
 		#Se volta da recursão, é feito um passo a mais
 		passos += 1
-		print("passos = %d" % passos)
+		print("passos: %d" % passos)
+
+		#Na volta da recursao printa na tela o estado que esta voltando
+		print("----------------Estado Atual----------------")
+		estado.printState()
+
 
 
 """
@@ -73,6 +80,7 @@ s = State()
 place_holder_father = State()
 place_holder_father.addState(s)
 
+
 N = 3
 for i in range(N):
 	s.pins[0].push(N-i-1)
@@ -80,3 +88,5 @@ for i in range(N):
 s.addFather(place_holder_father)
 
 dfs(s)
+
+print("Numero de passos %d" % passos)
