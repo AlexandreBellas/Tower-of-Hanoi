@@ -117,6 +117,19 @@ class State:
 				print(s.pins[j].pop(), end='\n')
 			print("Pino %d ^ " % j, end='\n\n')
 
+	def printStateString(self):
+		s = State(False, False)
+		self.copyState(s)
+		text = ""
+		for j in range(len(self.pins)):
+			if s.pins[j].isEmpty():
+				text += "<empty>\n"
+			for i in range(0, s.pins[j].size()):
+				text += str(s.pins[j].pop()) + '\n'
+			text += "Pino " + str(j) + " ^\n\n"
+
+		return text
+
 	#Gera os próximos estados (filhos)
 	def generateNextStates(self, check_grandpas_and_uncles=True):
 		#Para cada pino do estado atual

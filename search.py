@@ -1,10 +1,12 @@
 from models import Pin, State
+import time
 
 #Função de busca em profundidade (dfs)
 class Search:
 	#Constructor
 	def __init__(self):
 		self.passos = 0
+		self.tempo_espera = True
 
 	#=============================================================================#
 
@@ -69,29 +71,39 @@ class Search:
 	#=============================================================================#
 
 	#Auxiliar function to set passos to 0
-	def hillClimbing(self, estado):
+	def hillClimbing(self, estado, interface=None):
 		self.passos = 0
-		self.__hillClimbingAlgorithm(estado)
+		self.__hillClimbingAlgorithm(estado, interface)
+
+	def __includeTextToInterface(self, text, increment=False, interface=None):
+		if interface == None:
+			print(text)
+		else:
+			if increment:
+				interface.LabelHC['text'] += text
+			else:
+				interface.LabelHC['text'] = text
 
 	#Private function that auxiliates hill climbing algorithm
 	def __calculateScore(self, estado):
 		return 2*len(estado.pins[0].items) + len(estado.pins[1].items)
 
 	#Heuristic algorithm hill climbing
-	def __hillClimbingAlgorithm(self, estado):
+	def __hillClimbingAlgorithm(self, estado, interface=None):
 		self.passos += 1
-		print("passos: %d" % self.passos)
-
+		text = "passos: " + str(self.passos) + "\n\n"
+		self.__includeTextToInterface(text=text, interface=interface)
+		#print("passos: %d" % self.passos)
+		
 		#Verificação se está no estado final
 		if estado.pins[0].isEmpty() and (estado.pins[1].isEmpty()):
-			print("----------------Estado Atual----------------")
-			estado.printState()
-			print("Estado final alcançado!")
-			quit()
+			text = "----------------Estado Atual----------------\n\n" + estado.printStateString() + "\nEstado final alcançado!\n"  
+			self.__includeTextToInterface(text=text, increment=True, interface=interface)
+			return
 
 		#Printando estado atual
-		print("----------------Estado Atual----------------")
-		estado.printState()
+		text = "----------------Estado Atual----------------\n\n" + estado.printStateString()
+		self.__includeTextToInterface(text=text, increment=True, interface=interface)
 
 		#Gerando todos os próximos estados
 		estado.generateNextStates()
@@ -101,7 +113,11 @@ class Search:
 		for est in estado.next_states:
 			scores.append(self.__calculateScore(est))
 
+		#Tempo para percepção do usuário
+		if self.tempo_espera:
+			time.sleep(3)
+
 		#Indo recursivamente para o próximo estado com menor score
-		self.__hillClimbingAlgorithm(estado.next_states[scores.index(min(scores))])
+		self.__hillClimbingAlgorithm(estado.next_states[scores.index(min(scores))], interface)
 
 	#=============================================================================#

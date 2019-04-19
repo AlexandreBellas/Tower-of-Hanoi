@@ -1,33 +1,123 @@
 import tkinter as tk
+from tkinter import messagebox as msgb
+from models import State
+from search import Search
+import time
+import threading as thr
+
+def espera_ae(LabelTeste):
+	time.sleep(2)
+
+	LabelTeste['text'] = "Mudei depois"
 
 class Interface:
 	def __init__(self):
 		self.program_title = "Tower of Hanoi"
 		self.pieces = 3
+
+		self.LabelDFS = 0
+		self.LabelHC = 0
 		
 		while True:
-			if(self.mainWindow() == 1):
-				self.buscaProfundidade()
-			else:
-				self.buscaHillClimbing()
+			self.mainWindow()
+				
 
 	def buscaProfundidade(self):
-		print("teste1" + self.pieces)
+
+		#print("teste1" + self.pieces)
+		DFSWindow = tk.Tk()
+		DFSWindow.title("Depth First Search algorithm")
+
+		self.LabelDFS = tk.Label(DFSWindow,
+							text="",
+							font="Calibri 14")
+
+		self.LabelDFS.pack(padx=100, pady=50)
+
+		t = thr.Thread(target=espera_ae, args=(self.LabelDFS,))
+		t.start()
+
+		self.LabelDFS['text'] = "Mudei antes"
+
+		DFSWindow.mainloop()
+
 
 	def buscaHillClimbing(self):
-		print("teste2" + self.pieces)
+		
+		def executeHillClimbing():
+			busca.hillClimbing(s, self)
+
+		def jumpToEnd():
+			busca.tempo_espera=False
+
+		def on_closing():
+			jumpToEnd()
+			time.sleep(1)
+			HCWindow.destroy()
+
+		#print("teste2" + self.pieces)
+		HCWindow = tk.Tk()
+		HCWindow.title("Hill Climbing heuristic")
+
+		#Label
+		self.LabelHC = tk.Label(HCWindow,
+							text="",
+							font="Calibri 14")
+
+		#Button for jumping to the end
+		ButtonHC = tk.Button(HCWindow,
+							text="Jump to the end!",
+							font="Calibri 10",
+							command=jumpToEnd,
+							width="30",
+							height="3")
+
+		#Packing
+		self.LabelHC.pack(side=tk.TOP, padx=100, pady=10)
+		ButtonHC.pack(side=tk.BOTTOM, pady=30)
+
+		#Setup of the search
+		s = State(initial_state_num_pieces=self.pieces)
+		busca = Search()
+
+		t = thr.Thread(target=executeHillClimbing)
+		t.start()
+
+		HCWindow.protocol("WM_DELETE_WINDOW", on_closing)
+
+		HCWindow.mainloop()
 
 	def mainWindow(self):
 
+		def verifyEntryWidgetContent():
+			entry = NumPiecesEntryWidget.get()
+			if entry == "":
+				msgb.showerror("Error", "Don't let the text box empty!")
+				return False
+			else:
+				try:
+					entry = int(entry)
+					return True
+				except ValueError:
+					msgb.showerror("Error", "Put a valid number.")
+					return False
+
 		def buttonDFS():
-			self.pieces = NumPiecesEntryWidget.get()
-			MainWindow.destroy()
-			return 1
+			if verifyEntryWidgetContent():
+				self.pieces = int(NumPiecesEntryWidget.get())
+				MainWindow.destroy()
+				self.buscaProfundidade()
 
 		def buttonHC():
-			self.pieces = NumPiecesEntryWidget.get()
-			MainWindow.destroy()
-			return 2
+			if verifyEntryWidgetContent():
+				self.pieces = int(NumPiecesEntryWidget.get())
+				MainWindow.destroy()
+				self.buscaHillClimbing()
+
+		def on_closing():
+			if msgb.askokcancel("Quit", "Do you want to quit?"):
+				quit()
+
 
 		MainWindow = tk.Tk()
 		MainWindow.title("Tower of Hanoi")
@@ -51,7 +141,9 @@ class Interface:
 
 		#Entry widget to choose the number of pieces
 		NumPiecesEntryWidget = tk.Entry(MainWindow,
-								width=30)
+								width=30,
+								justify=tk.RIGHT)
+		NumPiecesEntryWidget.insert(1, "3")
 
 		#Botoes:
 		ButtonDFS = tk.Button(MainWindow,
@@ -76,7 +168,7 @@ class Interface:
 		ButtonDFS.pack(side=tk.LEFT, padx=50, pady=40)
 		ButtonHC.pack(side=tk.RIGHT, padx=50, pady=20)
 
+		#'X' click handler
+		MainWindow.protocol("WM_DELETE_WINDOW", on_closing)
+
 		MainWindow.mainloop()
-
-
-window = Interface()
