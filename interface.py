@@ -1,7 +1,7 @@
 from tkinter import *
 
 
-class Application:
+class Interface:
 	def __init__(self, master=None):
 		#Primeiro Container
 		self.primeiroContainer = Frame(master)
