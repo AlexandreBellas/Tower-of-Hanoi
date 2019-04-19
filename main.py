@@ -11,16 +11,7 @@ from search import Search
 import time
 import os
 
-s = State()
-place_holder_father = State()
-place_holder_father.addState(s)
-
-N = 3
-for i in range(N):
-	s.pins[0].push(N-i-1)
-
-s.addFather(place_holder_father)
-
+s = State(initial_state_num_pieces=3)
 
 while True:
 	input("Oi, eu sou o potato. Aperte enter para continuar com as buscas!")
@@ -35,6 +26,6 @@ while True:
 	print("Very good! Finished a hill climbing. Wait there a minute.")
 	time.sleep(2)
 
-	os.system("clear")
+	#os.system("clear")
 
 print("Numero de passos %d" % passos)

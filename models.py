@@ -44,10 +44,19 @@ class Pin:
 class State:
 
 	#Constructor:
-	def __init__(self):
+	def __init__(self, initial_state_condition=True, place_holder_father_condition=True, initial_state_num_pieces=3):
 		self.pins = [Pin() for j in range(3)]
 		self.next_states = []
 		self.father = 0
+
+		if initial_state_condition:
+			for i in range(initial_state_num_pieces):
+				self.pins[0].push(initial_state_num_pieces-i-1)
+
+		if place_holder_father_condition:
+			place_holder_father = State(False, False)
+			place_holder_father.addState(self)
+			self.addFather(place_holder_father)
 
 	#Methods:
 	#Retorna true se o estado "state" for diferente do estado atual, false caso contrario
@@ -99,7 +108,7 @@ class State:
 #
 #	Pino 3 ^ 
 	def printState(self):
-		s = State()
+		s = State(False, False)
 		self.copyState(s)
 		for j in range(len(self.pins)):
 			if s.pins[j].isEmpty():
@@ -109,7 +118,7 @@ class State:
 			print("Pino %d ^ " % j, end='\n\n')
 
 	#Gera os próximos estados (filhos)
-	def generateNextStates(self):
+	def generateNextStates(self, check_grandpas_and_uncles=True):
 		#Para cada pino do estado atual
 		for i in range(len(self.pins)):
 
@@ -123,22 +132,29 @@ class State:
 					if j != i:
 
 						#Criamos um estado novo que será a cópia do estado atual
-						s = State()
+						s = State(False, False)
 						self.copyState(s)
 						#e o estado atual será pai desse novo estado
 						s.addFather(self)
 
 						#Tentamos inserir a peça retirada do estado atual nesse novo estado
 						if s.pins[j].push(piece):
-							#Condition to check if grandpa is different fron grandson
-							if (self.father.isItemDifferent(s)):
-								#Condition to check if uncle is different from nephew
-								if (self.diffUncle(s)):
-									self.addState(s)
+
+							#Check if we need to verify grandpa and uncle's condition
+							if check_grandpas_and_uncles:
+								
+								#Condition to check if grandpa is different fron grandson
+								if (self.father.isItemDifferent(s)):
+									#Condition to check if uncle is different from nephew
+									if (self.diffUncle(s)):
+										self.addState(s)
+									else:
+										del s
 								else:
 									del s
+
 							else:
-								del s
+								self.addState(s)
 
 				#Voltando a peca original no seu lugar devido
 				self.pins[i].push(piece)
