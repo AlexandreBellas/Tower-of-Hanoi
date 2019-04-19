@@ -7,6 +7,7 @@ This is the main archive of the Tower of Hanoi problem
 #larica is testing
 
 from models import Pin, State
+from depthfirst import Dfs
 import time
 import os
 
@@ -96,7 +97,6 @@ def hillClimbing(estado):
 	#Indo recursivamente para o próximo estado com menor score
 	hillClimbing(estado.next_states[scores.index(min(scores))])
 
-
 """
 First State for 3 pieces:
 
@@ -128,14 +128,18 @@ for i in range(N):
 
 s.addFather(place_holder_father)
 
+
 while True:
 	input("Oi, eu sou o potato. Aperte enter para continuar com a DFS!")
 	
 	passos = 0
-	
-	#dfs(s, [])
-	hillClimbing(s)
 
+	#dfs(s, [])
+	#hillClimbing(s)
+
+	profundidade = Dfs(passos)
+	profundidade.busca(s, [])
+	
 	print("Muito bem! Cabou um DFS. Perae um minuto.")
 	time.sleep(2)
 
