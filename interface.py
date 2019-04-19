@@ -5,11 +5,6 @@ from search import Search
 import time
 import threading as thr
 
-def espera_ae(LabelTeste):
-	time.sleep(2)
-
-	LabelTeste['text'] = "Mudei depois"
-
 class Interface:
 	def __init__(self):
 		self.program_title = "Tower of Hanoi"
@@ -24,23 +19,48 @@ class Interface:
 
 	def buscaProfundidade(self):
 
+		def executeDFS():
+			busca.dfs(s, [], self)
+
+		def jumpToEnd():
+			busca.tempo_espera = 0
+
+		def on_closing():
+			jumpToEnd()
+			time.sleep(1)
+			DFSWindow.destroy()
+
 		#print("teste1" + self.pieces)
 		DFSWindow = tk.Tk()
 		DFSWindow.title("Depth First Search algorithm")
 
+		#Label
 		self.LabelDFS = tk.Label(DFSWindow,
 							text="",
 							font="Calibri 14")
 
-		self.LabelDFS.pack(padx=100, pady=50)
+		#Button for jumping to the end
+		ButtonDFS = tk.Button(DFSWindow,
+							text="Jump to the end!",
+							font="Calibri 10",
+							command=jumpToEnd,
+							width="30",
+							height="3")
 
-		t = thr.Thread(target=espera_ae, args=(self.LabelDFS,))
+		#Packing
+		self.LabelDFS.pack(side=tk.TOP, padx=100, pady=10)
+		ButtonDFS.pack(side=tk.BOTTOM, pady=30)
+
+		#Setup of the search
+		s = State(initial_state_num_pieces=self.pieces)
+		busca = Search()
+
+		t = thr.Thread(target=executeDFS)
 		t.start()
 
-		self.LabelDFS['text'] = "Mudei antes"
+		DFSWindow.protocol("WM_DELETE_WINDOW", on_closing)
 
 		DFSWindow.mainloop()
-
 
 	def buscaHillClimbing(self):
 		
