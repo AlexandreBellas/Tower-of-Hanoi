@@ -65,6 +65,37 @@ def dfs(estado, states_gone=[]):
 			estado.printState()
 
 
+def calculateScore(estado):
+	return 2*len(estado.pins[0].items) + len(estado.pins[1].items)
+
+def hillClimbing(estado):
+	#Contagem de passos
+	global passos
+	print("passos =", passos)
+	passos += 1
+
+	#Verificação se está no estado final
+	if estado.pins[0].isEmpty() and (estado.pins[1].isEmpty()):
+		print("----------------Estado Atual----------------")
+		estado.printState()
+		print("Estado final alcançado!")
+		quit()
+
+	#Printando estado atual
+	print("----------------Estado Atual----------------")
+	estado.printState()
+
+	#Gerando todos os próximos estados
+	estado.generateNextStates()
+
+	#Calculando o score de todos os próximos estados
+	scores = []
+	for est in estado.next_states:
+		scores.append(calculateScore(est))
+
+	#Indo recursivamente para o próximo estado com menor score
+	hillClimbing(estado.next_states[scores.index(min(scores))])
+
 
 """
 First State for 3 pieces:
@@ -102,8 +133,9 @@ while True:
 	
 	passos = 0
 	
-	dfs(s, [])
-	
+	#dfs(s, [])
+	hillClimbing(s)
+
 	print("Muito bem! Cabou um DFS. Perae um minuto.")
 	time.sleep(2)
 
