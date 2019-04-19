@@ -1,15 +1,16 @@
-import tkinter as tk
+from tkinter import *
 
-class Interface:
-	def __init__(self):
+class Interface(Frame):
+	def __init__(self, master=None):
+		super().__init__(master)
+		self.master = master
 		self.program_title = "Tower of Hanoi"
 		self.pieces = 3
+		self.containters = [Frame(master), Frame(master), Frame(master)]
+		for c in self.containters:
+			c.pack()
+		self.createWidgets()
 		
-		while True:
-			if(self.mainWindow() == 1):
-				self.buscaProfundidade()
-			else:
-				self.buscaHillClimbing()
 
 	def buscaProfundidade(self):
 		print("teste1" + self.pieces)
@@ -17,66 +18,42 @@ class Interface:
 	def buscaHillClimbing(self):
 		print("teste2" + self.pieces)
 
-	def mainWindow(self):
+	def buttonDFS(self):
+		self.pieces = self.NumPiecesEntryWidget.get()
+		print("teste1" + self.pieces)
 
-		def buttonDFS():
-			self.pieces = NumPiecesEntryWidget.get()
-			MainWindow.destroy()
-			return 1
+	def buttonHC(self):
+		self.pieces = self.NumPiecesEntryWidget.get()
+		print("teste2" + self.pieces)
 
-		def buttonHC():
-			self.pieces = NumPiecesEntryWidget.get()
-			MainWindow.destroy()
-			return 2
-
-		MainWindow = tk.Tk()
-		MainWindow.title("Tower of Hanoi")
+	def createWidgets(self):
+		#Titulo da Janela
+		self.master.title("Tower of Hanoi")
 
 		#Titulo
-		LabelTitulo = tk.Label(MainWindow,
-								text="Main Menu",
-								font="Calibri 14 bold")
-		
+		LabelTitulo = Label(self.containters[0], text="Main Menu", font="Calibri 14 bold")
 
 		#Subtitulo
-		LabelSubtitulo = tk.Label(MainWindow,
-									text="Choose your algorithm!",
-									font="Calibri 12",
-									height=5)
+		LabelSubtitulo = Label(self.containters[0], text="Choose your algorithm!", font="Calibri 12", height=5)
 
 		#Titulo Entry widget
-		LabelTituloEntryWidget = tk.Label(MainWindow,
-									text="Enter here the number of pieces",
-									font="Calibri 10")
+		LabelTituloEntryWidget = Label(self.containters[1], text="Enter here the number of pieces", font="Calibri 10")
 
 		#Entry widget to choose the number of pieces
-		NumPiecesEntryWidget = tk.Entry(MainWindow,
-								width=30)
+		self.NumPiecesEntryWidget = Entry(self.containters[1], width=30)
 
 		#Botoes:
-		ButtonDFS = tk.Button(MainWindow,
-								text="Depth First Search - DFS",
-								font="Calibri 10",
-								command=buttonDFS,
-								width=30,
-								height=5)
-
-		ButtonHC = tk.Button(MainWindow,
-								text="Hill Climbing heuristic",
-								font="Calibri 10",
-								command=buttonHC,
-								width=30,
-								height=5)
+		ButtonDFS = Button(self.containters[2], text="Depth First Search - DFS", font="Calibri 10", command=self.buttonDFS, width=30, height=5)
+		ButtonHC = Button(self.containters[2], text="Hill Climbing Heuristic", font="Calibri 10", command=self.buttonHC, width=30, height=5)
 
 		#Packing
-		LabelTitulo.pack(side=tk.TOP)
-		LabelSubtitulo.pack(side=tk.TOP)
-		LabelTituloEntryWidget.pack(side=tk.TOP)
-		NumPiecesEntryWidget.pack(side=tk.TOP)
-		ButtonDFS.pack(side=tk.LEFT, padx=50, pady=40)
-		ButtonHC.pack(side=tk.RIGHT, padx=50, pady=20)
+		LabelTitulo.pack(side=TOP)
+		LabelSubtitulo.pack(side=BOTTOM)
+		LabelTituloEntryWidget.pack(side=TOP)
+		self.NumPiecesEntryWidget.pack(side=BOTTOM)
+		ButtonDFS.pack(side=LEFT, padx=50, pady=40)
+		ButtonHC.pack(side=RIGHT, padx=50, pady=20)
 
-		MainWindow.mainloop()
-
-
-window = Interface()
+root = Tk()
+interface = Interface(master=root)
+interface.mainloop()
