@@ -1,6 +1,6 @@
 import tkinter as tk
 
-class Application:
+class Interface:
 	def __init__(self):
 		self.program_title = "Tower of Hanoi"
 		self.pieces = 3
@@ -79,4 +79,4 @@ class Application:
 		MainWindow.mainloop()
 
 
-window = Application()
+window = Interface()
