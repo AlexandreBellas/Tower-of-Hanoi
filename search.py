@@ -1,5 +1,6 @@
 from models import Pin, State
 import time
+import interface
 
 #Função de busca em profundidade (dfs)
 class Search:
@@ -37,12 +38,14 @@ class Search:
 	def __dfsAlgorithm(self, estado, states_gone=[], interface=None):
 		if estado.pins[0].isEmpty() and (estado.pins[1].isEmpty()):
 			text = "----------------Estado Atual----------------\n\n" + estado.printStateString() + "\nEstado final alcançado!\n"  
-			self.__includeTextToInterface(text=text, mode='dfs', increment=True, interface=interface)
+			#self.__includeTextToInterface(text=text, mode='dfs', increment=True, interface=interface)
+			interface.drawState(state=estado, passos=self.passos)
 			return 0
 
 		#Printa no terminal como esta o estado atual
 		text = "----------------Estado Atual----------------\n\n" + estado.printStateString()
-		self.__includeTextToInterface(text=text, mode='dfs', increment=True, interface=interface)
+		#self.__includeTextToInterface(text=text, mode='dfs', increment=True, interface=interface)
+		interface.drawState(state=estado, passos=self.passos)
 
 		#Gera automaticamente os proximos estados
 		estado.generateNextStates()
@@ -76,7 +79,8 @@ class Search:
 			#Acrescenta-se o número de passos
 			self.passos += 1
 			text = "passos: " + str(self.passos) + "\n\n"
-			self.__includeTextToInterface(text=text, mode='dfs', interface=interface)
+			#self.__includeTextToInterface(text=text, mode='dfs', interface=interface)
+			interface.drawState(state=estado, passos=self.passos)
 
 			#Recursivamente, busca em profundidade no filho
 			if(self.__dfsAlgorithm(est, states_gone, interface) == 0):
@@ -85,11 +89,13 @@ class Search:
 				#Se volta da recursão, é feito um passo a mais
 				self.passos += 1
 				text = "passos: " + str(self.passos) + "\n\n"
-				self.__includeTextToInterface(text=text, mode='dfs', interface=interface)
+				#self.__includeTextToInterface(text=text, mode='dfs', interface=interface)
+				interface.drawState(state=estado, passos=self.passos)
 
 				#Na volta da recursao printa na tela o estado que esta voltando
 				text = "----------------Estado Atual----------------\n\n" + estado.printStateString()
-				self.__includeTextToInterface(text=text, mode='dfs', increment=True, interface=interface)
+				#self.__includeTextToInterface(text=text, mode='dfs', increment=True, interface=interface)
+				interface.drawState(state=estado, passos=self.passos)
 
 	#=============================================================================#
 

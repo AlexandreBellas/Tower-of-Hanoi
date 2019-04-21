@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox as msgb
-from models import State
+from models import State, Pin
 from search import Search
 import time
 import threading as thr
@@ -12,6 +12,9 @@ class Interface:
 
 		self.LabelDFS = 0
 		self.LabelHC = 0
+
+		self.canvasHeight = 350
+		self.canvasWidth = 700
 		
 		while True:
 			self.mainWindow()
@@ -39,6 +42,12 @@ class Interface:
 							text="",
 							font="Calibri 14")
 
+		#Canvas
+		self.Canvas = tk.Canvas(DFSWindow, 
+							bg="white", 
+							height=self.canvasHeight, 
+							width=self.canvasWidth)
+
 		#Button for jumping to the end
 		ButtonDFS = tk.Button(DFSWindow,
 							text="Jump to the end!",
@@ -48,7 +57,8 @@ class Interface:
 							height="3")
 
 		#Packing
-		self.LabelDFS.pack(side=tk.TOP, padx=100, pady=10)
+		#self.LabelDFS.pack(side=tk.TOP, padx=100, pady=10)
+		self.Canvas.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
 		ButtonDFS.pack(side=tk.BOTTOM, pady=30)
 
 		#Setup of the search
@@ -84,6 +94,12 @@ class Interface:
 							text="",
 							font="Calibri 14")
 
+		#Canvas
+		self.Canvas = tk.Canvas(HCWindow, 
+							bg="white", 
+							height=self.canvasHeight, 
+							width=self.canvasWidth)
+
 		#Button for jumping to the end
 		ButtonHC = tk.Button(HCWindow,
 							text="Jump to the end!",
@@ -94,6 +110,7 @@ class Interface:
 
 		#Packing
 		self.LabelHC.pack(side=tk.TOP, padx=100, pady=10)
+		self.Canvas.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
 		ButtonHC.pack(side=tk.BOTTOM, pady=30)
 
 		#Setup of the search
@@ -106,6 +123,54 @@ class Interface:
 		HCWindow.protocol("WM_DELETE_WINDOW", on_closing)
 
 		HCWindow.mainloop()
+
+	def drawState(self, state=None, passos=None):
+		#Apaga o Canvas
+		self.Canvas.delete("all")
+
+		s = State()
+		state.copyState(s)
+		pinAux = [Pin() for j in range(3)]
+		for j in range(3):
+			for i in range(0, state.pins[j].size()):
+				block = state.pins[j].pop()
+				pinAux[j].push(block)
+
+		#Define o tamanho dos pinos
+		pinWidth = 10
+		pinHeight = 300
+
+		#Define o tamanho do menor bloco
+		minBlockWidth = self.canvasWidth/6*self.pieces
+		minBlockHeight = pinHeight/self.pieces
+
+		#Criando os Pinos
+		self.Canvas.create_rectangle(self.canvasWidth/4 -pinWidth/2, 
+								self.canvasHeight -pinHeight, 
+								self.canvasWidth/4 +pinWidth/2, 
+								self.canvasHeight, 
+								fill="black")
+		self.Canvas.create_rectangle(self.canvasWidth/2 -pinWidth/2, 
+								self.canvasHeight -pinHeight, 
+								self.canvasWidth/2 +pinWidth/2, 
+								self.canvasHeight, 
+								fill="black")
+		self.Canvas.create_rectangle(3*self.canvasWidth/4 -pinWidth/2, 
+								self.canvasHeight -pinHeight, 
+								3*self.canvasWidth/4 +pinWidth/2, 
+								self.canvasHeight, 
+								fill="black")
+
+		for j in range(len(pinAux)):
+			towerHeight = 0
+			for i in range(0, pinAux[j].size()):
+				block = pinAux[j].pop()
+				blockX0 = ((j+1)*self.canvasWidth/4) - minBlockWidth*(block+1)/2
+				blockY0 = self.canvasHeight - (towerHeight + minBlockHeight*(block+1))
+				blockX1 = ((j+1)*self.canvasWidth/4) + minBlockWidth*(block+1)/2 + 1
+				blockY1 = self.canvasHeight - towerHeight
+				towerHeight += minBlockHeight*(block+1) + 1
+				self.Canvas.create_rectangle(blockX0, blockY0, blockX1, blockY1, fill="grey")
 
 	def mainWindow(self):
 
