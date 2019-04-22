@@ -61,7 +61,7 @@ class Search:
 			text = "passos: " + str(self.passos) + "\n\n"
 			print(text)
 
-			#Recursivamente, busca em profundidade no filho
+			#Recursivamente, busca em profundidade no filho, até encontrar o estado final
 			if(self.__dfsAlgorithm(est, states_gone) == 0):
 				return 0
 			else:
@@ -86,12 +86,7 @@ class Search:
 		return 2*len(estado.pins[0].items) + len(estado.pins[1].items)
 
 	#Heuristic algorithm hill climbing
-	def __hillClimbingAlgorithm(self, estado):
-		self.passos += 1
-		text = "passos: " + str(self.passos) + "\n\n"
-		print(text)
-		#print("passos: %d" % self.passos)
-		
+	def __hillClimbingAlgorithm(self, estado):		
 		#Verificação se está no estado final
 		if estado.pins[0].isEmpty() and (estado.pins[1].isEmpty()):
 			text = "----------------Estado Atual----------------\n\n" + estado.printStateString() + "\nEstado final alcançado!\n"  
@@ -100,6 +95,10 @@ class Search:
 
 		#Printando estado atual
 		text = "----------------Estado Atual----------------\n\n" + estado.printStateString()
+		print(text)
+
+		self.passos += 1
+		text = "passos: " + str(self.passos) + "\n\n"
 		print(text)
 
 		#Gerando todos os próximos estados
@@ -114,18 +113,19 @@ class Search:
 		if self.tempo_espera:
 			time.sleep(self.tempo)
 
+		#Ordenando o vetor de scores para obter em ordem crescente os estados seguintes
 		scores_sorted = sorted(scores)
-		print(scores)
-		print(scores_sorted)
+		#print(scores)
+		#print(scores_sorted)
 
 		#Indo recursivamente para o próximo estado do menor score ao maior score
 		for scr in scores_sorted:
-
-			print("scores.index(scr) =", scores.index(scr))
-			print("pino 0 prox estado =", estado.next_states[scores.index(scr)].pins[0].items)
-			print("pino 1 prox estado =", estado.next_states[scores.index(scr)].pins[1].items)
-			print("pino 2 prox estado =", estado.next_states[scores.index(scr)].pins[2].items)
+			# print("scores.index(scr) =", scores.index(scr))
+			# print("pino 0 prox estado =", estado.next_states[scores.index(scr)].pins[0].items)
+			# print("pino 1 prox estado =", estado.next_states[scores.index(scr)].pins[1].items)
+			# print("pino 2 prox estado =", estado.next_states[scores.index(scr)].pins[2].items)
 			#input("Enter para continuar!")
+			#Verificação se o estado final foi alcançado
 			if self.__hillClimbingAlgorithm(estado.next_states[scores.index(scr)]) == 0:
 				return 0
 
