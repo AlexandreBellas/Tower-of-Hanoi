@@ -171,6 +171,7 @@ class State:
 
 				#Voltando a peca original no seu lugar devido
 				self.pins[i].push(piece)
+				
 
 	#Printa todos os filhos do estado
 	def printNeighbors(self):

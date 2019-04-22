@@ -7,42 +7,25 @@ class Search:
 	def __init__(self):
 		self.passos = 0
 		self.tempo_espera = True
-		self.tempo = 1
-
-	#This function is auxiliar to print on the stdin or on the UI
-	def __includeTextToInterface(self, text, mode, increment=False, interface=None):
-		if interface == None:
-			print(text)
-		else:
-			if mode == 'hc':
-				if increment:
-					interface.LabelHC['text'] += text
-				else:
-					interface.LabelHC['text'] = text
-			elif mode == 'dfs':
-				if increment:
-					interface.LabelDFS['text'] += text
-				else:
-					interface.LabelDFS['text'] = text
-
+		self.tempo = 0
 
 	#=============================================================================#
 
 	#Auxiliar function to set passos to 0
-	def dfs(self, estado, states_gone=[], interface=None):
+	def dfs(self, estado, states_gone=[]):
 		self.passos = 0
-		self.__dfsAlgorithm(estado, states_gone, interface)
+		self.__dfsAlgorithm(estado, states_gone)
 
 	#DFS algorithm
-	def __dfsAlgorithm(self, estado, states_gone=[], interface=None):
+	def __dfsAlgorithm(self, estado, states_gone=[]):
 		if estado.pins[0].isEmpty() and (estado.pins[1].isEmpty()):
 			text = "----------------Estado Atual----------------\n\n" + estado.printStateString() + "\nEstado final alcançado!\n"  
-			self.__includeTextToInterface(text=text, mode='dfs', increment=True, interface=interface)
+			print(text)
 			return 0
 
 		#Printa no terminal como esta o estado atual
 		text = "----------------Estado Atual----------------\n\n" + estado.printStateString()
-		self.__includeTextToInterface(text=text, mode='dfs', increment=True, interface=interface)
+		print(text)
 
 		#Gera automaticamente os proximos estados
 		estado.generateNextStates()
@@ -76,51 +59,51 @@ class Search:
 			#Acrescenta-se o número de passos
 			self.passos += 1
 			text = "passos: " + str(self.passos) + "\n\n"
-			self.__includeTextToInterface(text=text, mode='dfs', interface=interface)
+			print(text)
 
 			#Recursivamente, busca em profundidade no filho
-			if(self.__dfsAlgorithm(est, states_gone, interface) == 0):
+			if(self.__dfsAlgorithm(est, states_gone) == 0):
 				return 0
 			else:
 				#Se volta da recursão, é feito um passo a mais
 				self.passos += 1
 				text = "passos: " + str(self.passos) + "\n\n"
-				self.__includeTextToInterface(text=text, mode='dfs', interface=interface)
+				print(text)
 
 				#Na volta da recursao printa na tela o estado que esta voltando
 				text = "----------------Estado Atual----------------\n\n" + estado.printStateString()
-				self.__includeTextToInterface(text=text, mode='dfs', increment=True, interface=interface)
+				print(text)
 
 	#=============================================================================#
 
 	#Auxiliar function to set passos to 0
-	def hillClimbing(self, estado, interface=None):
+	def hillClimbing(self, estado):
 		self.passos = 0
-		self.__hillClimbingAlgorithm(estado, interface)
+		self.__hillClimbingAlgorithm(estado)
 
 	#Private function that auxiliates hill climbing algorithm
 	def __calculateScore(self, estado):
 		return 2*len(estado.pins[0].items) + len(estado.pins[1].items)
 
 	#Heuristic algorithm hill climbing
-	def __hillClimbingAlgorithm(self, estado, interface=None):
+	def __hillClimbingAlgorithm(self, estado):
 		self.passos += 1
 		text = "passos: " + str(self.passos) + "\n\n"
-		self.__includeTextToInterface(text=text, mode='hc', interface=interface)
+		print(text)
 		#print("passos: %d" % self.passos)
 		
 		#Verificação se está no estado final
 		if estado.pins[0].isEmpty() and (estado.pins[1].isEmpty()):
 			text = "----------------Estado Atual----------------\n\n" + estado.printStateString() + "\nEstado final alcançado!\n"  
-			self.__includeTextToInterface(text=text, mode='hc', increment=True, interface=interface)
-			return
+			print(text)
+			return 0
 
 		#Printando estado atual
 		text = "----------------Estado Atual----------------\n\n" + estado.printStateString()
-		self.__includeTextToInterface(text=text, mode='hc', increment=True, interface=interface)
+		print(text)
 
 		#Gerando todos os próximos estados
-		estado.generateNextStates()
+		estado.generateNextStates(check_grandpas_and_uncles=True)
 
 		#Calculando o score de todos os próximos estados
 		scores = []
@@ -131,7 +114,21 @@ class Search:
 		if self.tempo_espera:
 			time.sleep(self.tempo)
 
-		#Indo recursivamente para o próximo estado com menor score
-		self.__hillClimbingAlgorithm(estado.next_states[scores.index(min(scores))], interface)
+		scores_sorted = sorted(scores)
+		print(scores)
+		print(scores_sorted)
+
+		#Indo recursivamente para o próximo estado do menor score ao maior score
+		for scr in scores_sorted:
+			scr = scores_sorted[0]
+			print("scores.index(scr) =", scores.index(scr))
+			print("pino 0 prox estado =", estado.next_states[scores.index(scr)].pins[0].items)
+			print("pino 1 prox estado =", estado.next_states[scores.index(scr)].pins[1].items)
+			print("pino 2 prox estado =", estado.next_states[scores.index(scr)].pins[2].items)
+			input("Enter para continuar!")
+			if self.__hillClimbingAlgorithm(estado.next_states[scores.index(scr)]) == 0:
+				return 0
+
+		#self.__hillClimbingAlgorithm(estado.next_states[scores.index(min(scores))])
 
 	#=============================================================================#

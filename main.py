@@ -6,29 +6,26 @@ This is the main archive of the Tower of Hanoi problem
 #Larica is watching
 #larica is testing
 
-# from models import State
-# from search import Search
-from interface import Interface
-# import time
-# import os
+from search import Search
+from models import State
+import time
+import os
 
-# s = State(initial_state_num_pieces=3)
+while True:
+	num_pieces = int(input("Número de peças: "))
 
-# while True:
-# 	input("Oi, eu sou o potato. Aperte enter para continuar com as buscas!")
+	s = State(initial_state_num_pieces=num_pieces)
 
-# 	busca = Search()
+	input("Oi, eu sou o potato. Aperte enter para continuar com as buscas!")
 
-# 	busca.dfs(s, [])
-# 	print("Muito bem! Cabou um DFS. Perae um minuto.")
-# 	time.sleep(2)
+	busca = Search()
 
-# 	busca.hillClimbing(s)
-# 	print("Very good! Finished a hill climbing. Wait there a minute.")
-# 	time.sleep(2)
+	busca.dfs(s, [])
+	input("Muito bem! Cabou um DFS. Enter pro Hill Climbing.")
 
-# 	#os.system("clear")
+	busca.hillClimbing(s)
+	input("Very good! Finished a hill climbing. Enter to restart.")
 
-# print("Numero de passos %d" % passos)
+	os.system("clear")
 
-window = Interface()
+print("Numero de passos %d" % passos)
