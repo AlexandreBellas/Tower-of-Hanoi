@@ -11,21 +11,27 @@ from models import State
 import time
 import os
 
+#Executará até o fim
 while True:
-	num_pieces = int(input("Número de peças: "))
+	#É necessária uma entrada numérica
+	num_pieces = int(input("Número de peças (insira 0 para sair): "))
 
+	#Condição de saída do programa
+	if num_pieces == 0:
+		os.system("clear")
+		quit()
+
+	#Criação do estado inicial com o número de peças inserido
 	s = State(initial_state_num_pieces=num_pieces)
 
-	input("Oi, eu sou o potato. Aperte enter para continuar com as buscas!")
-
+	#Instanciação de um objeto de busca
 	busca = Search()
 
+	#Realização da busca DFS
 	busca.dfs(s, [])
-	input("Muito bem! Cabou um DFS. Enter pro Hill Climbing.")
+	input("Final do algoritmo DFS. Pressione enter para seguir para a heurística Hill Climbing.")
 
 	busca.hillClimbing(s)
-	input("Very good! Finished a hill climbing. Enter to restart.")
+	input("Final da heurística Hill Climbing. Pressione enter para reiniciar.")
 
 	os.system("clear")
-
-print("Numero de passos %d" % passos)

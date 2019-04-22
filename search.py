@@ -30,9 +30,6 @@ class Search:
 		#Gera automaticamente os proximos estados
 		estado.generateNextStates()
 
-		#Printa todos os filhos do estado atual
-		#estado.printNeighbors()
-
 		flag = 0
 
 		#Para cada estado filho
@@ -115,20 +112,11 @@ class Search:
 
 		#Ordenando o vetor de scores para obter em ordem crescente os estados seguintes
 		scores_sorted = sorted(scores)
-		#print(scores)
-		#print(scores_sorted)
 
 		#Indo recursivamente para o próximo estado do menor score ao maior score
 		for scr in scores_sorted:
-			# print("scores.index(scr) =", scores.index(scr))
-			# print("pino 0 prox estado =", estado.next_states[scores.index(scr)].pins[0].items)
-			# print("pino 1 prox estado =", estado.next_states[scores.index(scr)].pins[1].items)
-			# print("pino 2 prox estado =", estado.next_states[scores.index(scr)].pins[2].items)
-			#input("Enter para continuar!")
 			#Verificação se o estado final foi alcançado
 			if self.__hillClimbingAlgorithm(estado.next_states[scores.index(scr)]) == 0:
 				return 0
-
-		#self.__hillClimbingAlgorithm(estado.next_states[scores.index(min(scores))])
 
 	#=============================================================================#
