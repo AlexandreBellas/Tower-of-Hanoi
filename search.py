@@ -120,12 +120,12 @@ class Search:
 
 		#Indo recursivamente para o próximo estado do menor score ao maior score
 		for scr in scores_sorted:
-			scr = scores_sorted[0]
+
 			print("scores.index(scr) =", scores.index(scr))
 			print("pino 0 prox estado =", estado.next_states[scores.index(scr)].pins[0].items)
 			print("pino 1 prox estado =", estado.next_states[scores.index(scr)].pins[1].items)
 			print("pino 2 prox estado =", estado.next_states[scores.index(scr)].pins[2].items)
-			input("Enter para continuar!")
+			#input("Enter para continuar!")
 			if self.__hillClimbingAlgorithm(estado.next_states[scores.index(scr)]) == 0:
 				return 0
 
